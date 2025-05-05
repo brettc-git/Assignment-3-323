@@ -1,5 +1,3 @@
-## ALTER TO CONFINE TO SIMPLIFIED RAT25S
-
 import sys
 class Lexical:
     def __init__(self, input):
