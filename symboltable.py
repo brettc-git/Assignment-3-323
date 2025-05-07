@@ -15,7 +15,7 @@ class SymbolTable:
         if identifier in self.table:
             raise Exception("Identifier already exists in symbol table/Already declared.")
         self.table[identifier] = {
-            "address": self.memory_address
+            "address": self.memory_address, # include also type of lexeme like integer
         }
 
         self.memory_address += 1 # i.e. if memory address is 10000, next one will be 10001

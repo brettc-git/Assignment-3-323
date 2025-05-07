@@ -10,12 +10,11 @@ class Assembly:
 
     def print_instructions(self):
         print("ASSEMBLY INSTRUCTIONS USED")
-        for line in self.instructions:
-            print(line)
+        for index, line in enumerate(self.instructions, start = 1):
+            print(f"{index}: {line}")
 
 
-    def execute_instruction(self, instr, value = None):
-        command = ""
+    def execute_instruction(self, command, value = None):
         if command == "PUSHI": # Push integer value onto top of stack
             self.stack.append(value)
             self.instructions.append(f"PUSHI {value}")
@@ -24,6 +23,9 @@ class Assembly:
             self.stack.append(loaded_val)
             self.instructions.append(f"PUSHM {value}")
         elif command == "POPM": # Pop value from TOS and store at ML
+            if not self.stack:
+                print("Error: Stack empty on POPM")
+                return
             popped_val = self.stack.pop()
             self.memory_register[value] = popped_val
             self.instructions.append(f"POPM {value}")
@@ -33,22 +35,34 @@ class Assembly:
             self.instructions.append("SOUT")
         elif command == "SIN":
             self.stack.append(value)
+            self.instructions.append("SIN")
         elif command == "A":
+            if len(self.stack) < 2:
+                print("Error: Not enough values on stack for A")
             b = self.stack.pop()
             a = self.stack.pop()
             self.stack.append(a+b)
             self.instructions.append("A")
         elif command == "S":
+            if len(self.stack) < 2:
+                print("Error: Not enough values on stack for S")
+                return 
             b = self.stack.pop()
             a = self.stack.pop()
             self.stack.append(a-b)
             self.instructions.append("S")
         elif command == "M":
+            if len(self.stack) < 2:
+                print("Error: Not enough values on stack for M")
+                return 
             b = self.stack.pop()
             a = self.stack.pop()
             self.stack.append(a*b)
             self.instructions.append("M")
         elif command == "D":
+            if len(self.stack) < 2:
+                print("Error: Not enough values on stack for D")
+                return 
             b = self.stack.pop()
             a = self.stack.pop()
             self.stack.append(a/b)
