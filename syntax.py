@@ -88,86 +88,21 @@ class Syntax:
     self.statementList()
     self.match("Separator", "$$")
 
-  def optFunctionDefinitions(self):
-    if self.current and self.current[1] == "function":
-      rule = "<Opt Function Definitions> -> <Function Definitions>"
-      self.add_production(rule)
-      self.functionDefinitions()
-    else:
-      rule = "<Opt Function Definitions> -> <Empty>"
-      self.add_production(rule)
-      self.empty()
-
-  def functionDefinitions(self):
-    rule = "<Function Definitions> -> <Function> | <Function> <Function Definitions>"
-    self.add_production(rule)
-
-    self.function()
-
-    if self.current and self.current[1] == "function":
-      self.functionDefinitions()
-
-  def function(self):
-    rule = "<Function> -> function <Identifier> ( <Opt Parameter List> ) <Opt Declaration List> <Body>"
-    self.add_production(rule)
-
-    self.match("Keyword", "function")
-    self.match("Identifier")
-    self.match("Separator", "(")
-    self.optParameterList()
-    self.match("Separator", ")")
-    self.optDeclarationList()
-    self.body()
-
-  def optParameterList(self):
-    if self.current and self.current[0] == "Identifier":
-      rule = "<Opt Parameter List> -> <Parameter List>"
-      self.add_production(rule)
-      self.parameterList()
-    else:
-      rule = "<Opt Parameter List> -> <Empty>"
-      self.add_production(rule)
-      self.empty()
-
-  def parameterList(self):
-    rule = "<Parameter List> -> <Parameter> | <Parameter> , <Parameter List>"
-    self.add_production(rule)
-
-    self.parameter()
-    if self.current and self.current[1] == ",":
-      self.match("Separator", ",")
-      self.parameterList()
-
-  def parameter(self):
-    rule = "<Parameter> -> <IDs> <Qualifier>"
-    self.add_production(rule)
-
-    self.ids()
-    self.qualifier()
-
   def qualifier(self):
-    rule = "<Qualifier> -> integer | boolean | real"
+    rule = "<Qualifier> -> integer | boolean"
     self.add_production(rule)
 
     if self.current is None:
       self.syntax_error("Unexpected end of input in <Qualifier>")
 
     token_type, lexeme = self.current
-    if token_type == "Keyword" and lexeme in ["integer", "boolean", "real"]:
+    if token_type == "Keyword" and lexeme in ["integer", "boolean"]:
       self.match("Keyword", lexeme)
     else:
-      self.syntax_error("Invalid qualifier. Expected 'integer', 'boolean', or 'real'")
-
-  def body(self):
-    rule = "<Body> -> { <Statement List> }"
-    self.add_production(rule)
-
-    self.match("Separator", "{")
-    self.statementList()
-    self.match("Separator", "}")
+      self.syntax_error("Invalid qualifier. Expected 'integer' or 'boolean'")
 
   def optDeclarationList(self):
-    if self.current and self.current[0] == "Keyword" and self.current[1] in ["integer", "boolean", "real"]:
+    if self.current and self.current[0] == "Keyword" and self.current[1] in ["integer", "boolean"]:
       rule = "<Opt Declaration List> -> <Declaration List>"
       self.add_production(rule)
       self.declarationList()
@@ -182,7 +117,7 @@ class Syntax:
 
     self.declaration()
     self.match("Separator", ";")
-    if self.current and self.current[0] == "Keyword" and self.current[1] in ["integer", "real", "boolean"]:
+    if self.current and self.current[0] == "Keyword" and self.current[1] in ["integer", "boolean"]:
       self.declarationList()
 
   def declaration(self):
@@ -403,7 +338,7 @@ class Syntax:
       self.primary()
 
   def primary(self):
-    rule = "<Primary> -> <Identifier> <Primary Prime> | <Integer> | ( <Expression> ) | <Real> | true | false"
+    rule = "<Primary> -> <Identifier> <Primary Prime> | <Integer> | ( <Expression> ) | true | false"
     self.add_production(rule)
 
     if self.current is None:
@@ -420,8 +355,6 @@ class Syntax:
       self.match("Separator", "(")
       self.expression()
       self.match("Separator", ")")
-    elif token_type == "Real":
-      self.match("Real")
     elif token_type == "Boolean" or (token_type == "Keyword" and lexeme in ["true", "false"]):
       if token_type == "Boolean":
         self.match("Boolean")
@@ -512,6 +445,9 @@ def main():
         output_file.write(all_results)
 
     print("Combined results written to output.txt")
+
+    for i in range(len(output_content)):
+      print(output_content[i])
 
 if __name__ == "__main__":
     main()
