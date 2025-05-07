@@ -43,7 +43,7 @@ class Assembly:
         elif command == "LES":
             self.instructions.append("LES")
         elif command == "EQU":
-            pass
+            self.instructions.append("EQU")
         elif command == "NEQ":
             pass
         elif command == "GEQ":
