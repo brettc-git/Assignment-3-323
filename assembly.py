@@ -45,11 +45,11 @@ class Assembly:
         elif command == "EQU":
             self.instructions.append("EQU")
         elif command == "NEQ":
-            pass
+            self.instructions.append("NEQ")
         elif command == "GEQ":
-            pass
+            self.instructions.append("GEQ")
         elif command == "LEQ":
-            pass
+            self.instructions.append("LEQ")
         elif command == "JMP0": # Pop stack and if value is 0 then jmp to Instruction Location (IL)
             pass
         elif command == "JMP": # Unconditionally jump to IL

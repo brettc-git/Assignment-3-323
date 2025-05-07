@@ -10,6 +10,7 @@ class SymbolTable:
         self.memory_address = 10000
         self.table = {}
 
+
     # Insert identifier into table
     def insertAtTable(self, identifier):
         if len(self.table) == 0:

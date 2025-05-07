@@ -1,5 +1,8 @@
 from lexi import Lexical
 from syntax import Syntax
+from symboltable import SymbolTable 
+from assembly import Assembly
+
 
 def main():
     # Example input text - can be replaced with file reading if needed
@@ -11,19 +14,24 @@ def main():
     }
     """
 
-    # Create lexer and get tokens
+    # Prepare symbol table 
+    table = SymbolTable()
+
+    # Create lexer and get tokens from program
     lexer = Lexical(input_text)
     tokens = lexer.parse()
 
-    # Limit tokens to first 10 for brevity
-    limited_tokens = tokens[:10]
-
     # Display tokens in a legible format
-    print("Tokens (limited to first 10):")
+    print("Tokens:")
     print(f"{'Token Type':<15} Lexeme")
     print("-" * 30)
-    for token_type, lexeme in limited_tokens:
+    for token_type, lexeme in tokens:
         print(f"{token_type:<15} {lexeme}")
+
+    # Get only the identifiers 
+    for token_type, lexeme in tokens:
+        if token_type == "Identifier":
+            table.insertAtTable(lexeme)
 
     print("\nParsing Output:")
     # Create syntax parser and parse input
