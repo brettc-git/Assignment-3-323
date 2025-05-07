@@ -1,6 +1,5 @@
 import sys
 from lexi import Lexical
-from syntax import Syntax
 from symboltable import SymbolTable
 
 class Assembly:
@@ -15,28 +14,44 @@ class Assembly:
             print(line)
 
 
-    def execute_instruction(self, instr):
+    def execute_instruction(self, instr, value = None):
         command = ""
         if command == "PUSHI": # Push integer value onto top of stack
             self.stack.append(value)
-            self.instructions.append("PUSHI " + str(value))
+            self.instructions.append(f"PUSHI {value}")
         elif command == "PUSHM": # Push value stored at memory location onto TOS
-            pass
+            loaded_val = self.memory_register.get(value, 0)
+            self.stack.append(loaded_val)
+            self.instructions.append(f"PUSHM {value}")
         elif command == "POPM": # Pop value from TOS and store at ML
-            pass
+            popped_val = self.stack.pop()
+            self.memory_register[value] = popped_val
+            self.instructions.append(f"POPM {value}")
         elif command == "SOUT": # Pop vlaue from tOS and output to standard output
             value = self.stack.pop()
             print(f"Output: {value}")
             self.instructions.append("SOUT")
         elif command == "SIN":
-            pass
+            self.stack.append(value)
         elif command == "A":
+            b = self.stack.pop()
+            a = self.stack.pop()
+            self.stack.append(a+b)
             self.instructions.append("A")
         elif command == "S":
+            b = self.stack.pop()
+            a = self.stack.pop()
+            self.stack.append(a-b)
             self.instructions.append("S")
         elif command == "M":
+            b = self.stack.pop()
+            a = self.stack.pop()
+            self.stack.append(a*b)
             self.instructions.append("M")
         elif command == "D":
+            b = self.stack.pop()
+            a = self.stack.pop()
+            self.stack.append(a/b)
             self.instructions.append("D")
         elif command == "GRT": # Pop two items from stack and push 1 onto TOS if second item is greater, otherwise push 0
             self.instructions.append("GRT")

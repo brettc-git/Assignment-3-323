@@ -1,6 +1,5 @@
 import sys
 from lexi import Lexical
-from syntax import Syntax
 
 class SymbolTable:
 
@@ -13,9 +12,7 @@ class SymbolTable:
 
     # Insert identifier into table
     def insertAtTable(self, identifier):
-        if len(self.table) == 0:
-            return False
-        elif identifier in self.table:
+        if identifier in self.table:
             raise Exception("Identifier already exists in symbol table/Already declared.")
         self.table[identifier] = {
             "address": self.memory_address

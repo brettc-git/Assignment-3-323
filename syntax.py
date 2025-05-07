@@ -2,9 +2,11 @@
 
 import sys
 from lexi import Lexical
+from assembly import Assembly
+from symboltable import SymbolTable 
 
 class Syntax:
-  def __init__(self, input):
+  def __init__(self, input, table=None, AC=None):
     self.input = input
     self.lexer = Lexical(input)
     self.tokens = self.lexer.parse() # Parse all tokens from input
@@ -12,6 +14,9 @@ class Syntax:
     self.current = self.tokens[0] if self.tokens else None # Takes the first token if one exists
     self.output_content = []  # To store output in the required format
     self.last_production_rules = []  # Store last rules before adding token
+
+    self.table = table if table is not None else SymbolTable()
+    self.AC = AC if AC is not None else Assembly()
 
   def match(self, exp_type, exp_lexeme=None):
     # Get the current token and expected type and the lexeme
@@ -77,11 +82,8 @@ class Syntax:
 # Functions for each syntax rule
 
   def Rat25S(self):
-    rule = "<Rat25S> -> $$ <Opt Function Definitions> $$ <Opt Declaration List> $$ <Statement List> $$"
+    rule = "<Rat25S> -> $$ <Opt Declaration List> $$ <Statement List> $$"
     self.add_production(rule)
-
-    self.match("Separator", "$$")
-    self.optFunctionDefinitions()
     self.match("Separator", "$$")
     self.optDeclarationList()
     self.match("Separator", "$$")
@@ -125,7 +127,18 @@ class Syntax:
     self.add_production(rule)
 
     self.qualifier()
-    self.ids()
+    self.ids_declare() # Solely for Symbol table purposes
+
+  def ids_declare(self):
+       rule = "<IDs> -> <Identifier> | <Identifier>, <IDs>"
+       self.add_production(rule)
+
+       token_type, lexeme = self.match("Identifier")
+       self.table.insertAtTable(lexeme) # Insert variable into symbol table
+
+       if self.current and self.current[1] == ",":
+          self.match("Separator", ",")
+          self.ids_declare()
 
   def ids(self):
     rule = "<IDs> -> <Identifier> | <Identifier>, <IDs>"
@@ -189,11 +202,15 @@ class Syntax:
     rule = "<Assign> -> <Identifier> = <Expression> ;"
     self.add_production(rule)
 
-    self.match("Identifier")
+    token_type, lexeme = self.match("Identifier")
+    var_info = self.table.checkTable(lexeme) # check if declared 
+    dest_addr = var_info["address"] 
+
     self.match("Operator", "=")
     self.expression()
     self.match("Separator", ";")
 
+    self.AC.execute_instruction("POPM", dest_addr)
   def _if(self):
     rule = "<If> -> if(<Condition>)<Statement> <If Prime>"
     self.add_production(rule)
@@ -298,6 +315,10 @@ class Syntax:
       op = self.current[1]
       self.match("Operator", op)
       self.term()
+      if op == "+":
+         self.AC.execute_instruction("A")
+      else:
+         self.AC.execute_instruction("S")
       self.expressionPrime()
     else:
       rule = "<Expression Prime> -> <Empty>"
@@ -319,6 +340,10 @@ class Syntax:
       op = self.current[1]
       self.match("Operator", op)
       self.factor()
+      if op == "*":
+         self.AC.execute_instruction("M")
+      else:
+         self.AC.execute_instruction("D")
       self.termPrime()
     else:
       rule = "<Term Prime> -> <Empty>"
@@ -348,9 +373,13 @@ class Syntax:
 
     if token_type == "Identifier":
       self.match("Identifier")
+      var_info = self.table.checkTable(lexeme) # Check if declared
+      addr = var_info["address"]
+      self.AC.execute_instruction("PUSHM", addr) 
       self.primaryPrime()
     elif token_type == "Integer":
       self.match("Integer")
+      self.AC.execute_instruction("PUSHI", int(lexeme)) 
     elif token_type == "Separator" and lexeme == "(":
       self.match("Separator", "(")
       self.expression()
@@ -360,6 +389,8 @@ class Syntax:
         self.match("Boolean")
       else:
         self.match("Keyword", lexeme)
+      val = 1 if lexeme == "true" else 0
+      self.AC.execute_instruction("PUSHI", val)
     else:
       self.syntax_error(f"Invalid <Primary>: {token_type}, {lexeme}")
 
@@ -398,56 +429,56 @@ def fix_is_identifier(lexer_instance):
     lexer_instance.is_identifier = types.MethodType(fixed_is_identifier, lexer_instance)
     return lexer_instance
 
-# Main program with file output implementation
-def main():
-    # Read three test files
-    filenames = ["test1.txt", "test2.txt", "test3.txt", "test4.txt"]
-    all_results = ""
+# # Main program with file output implementation
+# def main():
+#     # Read three test files
+#     filenames = ["test1.txt", "test2.txt", "test3.txt", "test4.txt"]
+#     all_results = ""
 
-    for name in filenames:  # Go through each file
-        try:
-            with open(name, 'r') as file:  # Open the file
-                input_text = file.read()  # Read the file
+#     for name in filenames:  # Go through each file
+#         try:
+#             with open(name, 'r') as file:  # Open the file
+#                 input_text = file.read()  # Read the file
 
-            # Apply the fix to lexer
-            lexer = Lexical(input_text)
-            fix_is_identifier(lexer)
+#             # Apply the fix to lexer
+#             lexer = Lexical(input_text)
+#             fix_is_identifier(lexer)
 
-            # Then parse and get output content
-            parser = Syntax(input_text)
-            try:
-                output_content = parser.parse()
+#             # Then parse and get output content
+#             parser = Syntax(input_text)
+#             try:
+#                 output_content = parser.parse()
 
-                file_results = f"Analysis for {name}\n"
-                file_results += "="*50 + "\n\n"
-                file_results += "\n".join(output_content)
-                file_results += "\n\n"
+#                 file_results = f"Analysis for {name}\n"
+#                 file_results += "="*50 + "\n\n"
+#                 file_results += "\n".join(output_content)
+#                 file_results += "\n\n"
 
-                # Write to individual file
-                with open(f"{name}_output.txt", 'w') as output_file:
-                    output_file.write(file_results)
+#                 # Write to individual file
+#                 with open(f"{name}_output.txt", 'w') as output_file:
+#                     output_file.write(file_results)
 
-                # Append to combined results
-                all_results += file_results
+#                 # Append to combined results
+#                 all_results += file_results
 
-                print(f"Syntax Analyzer successfully parsed the file: {name}")
+#                 print(f"Syntax Analyzer successfully parsed the file: {name}")
 
-            except SyntaxError as e:
-                print(f"Error parsing {name}: {e}")
-                # The error will be in the output_content already
+#             except SyntaxError as e:
+#                 print(f"Error parsing {name}: {e}")
+#                 # The error will be in the output_content already
 
-        except FileNotFoundError:
-            print(f"File {name} not found")
-            all_results += f"File {name} not found\n\n"
+#         except FileNotFoundError:
+#             print(f"File {name} not found")
+#             all_results += f"File {name} not found\n\n"
 
-    # Write all results to a single output file
-    with open("output.txt", 'w') as output_file:
-        output_file.write(all_results)
+#     # Write all results to a single output file
+#     with open("output.txt", 'w') as output_file:
+#         output_file.write(all_results)
 
-    print("Combined results written to output.txt")
+#     print("Combined results written to output.txt")
 
-    for i in range(len(output_content)):
-      print(output_content[i])
+#     for i in range(len(output_content)):
+#       print(output_content[i])
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()
