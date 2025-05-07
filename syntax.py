@@ -513,7 +513,5 @@ def main():
 
     print("Combined results written to output.txt")
 
-    print(output_content)
-
 if __name__ == "__main__":
     main()

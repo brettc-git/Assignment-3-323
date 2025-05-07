@@ -6,6 +6,9 @@ class SymbolTable:
 
 
     def __init__(self):
+
+# Our initial memory address, gets incremented by 1 every time a new identifier is added
+        Memory_Address = 10000
         self.table = {}
 
     # Check if identifier already exists (boolean)
@@ -22,9 +25,6 @@ class SymbolTable:
 
 
     def printTable(self):
-
-
-
-# Our initial memory address, gets incremented by 1 every time a new identifier is added
-Memory_Address = 10000
+        for key, value in self.table.items():
+            print(key, value)
 
