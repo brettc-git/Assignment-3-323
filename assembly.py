@@ -12,6 +12,15 @@ class Assembly:
         print("ASSEMBLY INSTRUCTIONS USED")
         for index, line in enumerate(self.instructions, start = 1):
             print(f"{index}: {line}")
+            
+    def add_neq(self, operand1, operand2):
+        self.add_instruction("NEQ", operand1, operand2)
+
+    def add_leq(self, operand1, operand2):
+        self.add_instruction("LEQ", operand1, operand2)
+
+    def add_geq(self, operand1, operand2):
+        self.add_instruction("GEQ", operand1, operand2)
 
 
     def execute_instruction(self, command, value = None):
