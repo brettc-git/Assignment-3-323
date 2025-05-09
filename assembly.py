@@ -89,10 +89,12 @@ class Assembly:
         elif command == "LEQ":
             self.instructions.append("LEQ")
         elif command == "JMP0": # Pop stack and if value is 0 then jmp to Instruction Location (IL)
-            pass
+            if value is None:
+                return
+            self.instructions.append(f"JMP0 {value}")
         elif command == "JMP": # Unconditionally jump to IL
-            pass
+            self.instructions.append(f"JMP {value}")
         elif command == "LABEL":
-            pass # Simply pass, no action required
+            self.instructions.append("LABEL")
         else:
             print("Invalid command")
