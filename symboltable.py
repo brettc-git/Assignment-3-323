@@ -16,6 +16,7 @@ class SymbolTable:
             raise Exception("Identifier already exists in symbol table/Already declared.")
         self.table[identifier] = {
             "address": self.memory_address, # include also type of lexeme like integer
+            "type": type
         }
 
         self.memory_address += 1 # i.e. if memory address is 10000, next one will be 10001
@@ -27,6 +28,9 @@ class SymbolTable:
         return self.table[identifier]
 
     def printTable(self):
+        output = f"{'Identifier':<12}{'MemoryLocation':<16}Type\n"
         for key, value in self.table.items():
-            print(key, value)
+            resultType = value.get("type")
+            output += f"{key:<12}{value['address']:<16}{resultType}\n"
+        return output
 

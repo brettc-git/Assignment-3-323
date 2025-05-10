@@ -1,14 +1,14 @@
 $$
-function convertx (fahr integer) {
-    return 5 * (fahr - 32) / 9;
-}
+[* NO function definitions *]
 $$
-integer low, high, step;
+integer i, max, sum; [* declarations *]
 $$
-scan (low, high, step);
-while (low <= high)
-    print(low);
-    print(convertx(low));
-    low = low + step;
-endwhile
+sum = 0;
+i = 1;
+scan (max);
+while (i < max) {
+    sum = sum + i;
+    i = i + 1;
+} endwhile
+print (sum + max);
 $$

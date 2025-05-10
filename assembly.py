@@ -9,9 +9,10 @@ class Assembly:
         self.instructions = []
 
     def print_instructions(self):
-        print("ASSEMBLY INSTRUCTIONS USED")
+        output = "ASSEMBLY INSTRUCTIONS USED\n"
         for index, line in enumerate(self.instructions, start = 1):
-            print(f"{index}: {line}")
+            output += f"{index}: {line}"
+        return output
             
     def add_neq(self, operand1, operand2):
         self.add_instruction("NEQ", operand1, operand2)

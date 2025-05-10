@@ -134,7 +134,7 @@ class Syntax:
        self.add_production(rule)
 
        token_type, lexeme = self.match("Identifier")
-       self.table.insertAtTable(lexeme) # Insert variable into symbol table
+       self.table.insertAtTable(lexeme, token_type) # Insert variable into symbol table
 
        if self.current and self.current[1] == ",":
           self.match("Separator", ",")
