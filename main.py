@@ -17,7 +17,7 @@ def done(input_text):
 def main():
     table = SymbolTable()
     AC = Assembly() # For commands used
-    filenames = ["Assignment-3-323/test1.txt", "Assignment-3-323/test2.txt", "Assignment-3-323/test3.txt"]
+    filenames = ["test1.txt"]
 
     for name in filenames:
         try:

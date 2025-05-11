@@ -1,16 +1,201 @@
-Analysis for Assignment-3-323/test1.txt
+Analysis for test1.txt
 ==================================================
 
      <Rat25S> -> $$ <Opt Declaration List> $$ <Statement List> $$
 **Token: Separator       Lexeme: $$**
-     <Opt Declaration List> -> <Empty>
+     <Opt Declaration List> -> <Declaration List>
+     <Declaration List> -> <Declaration> ; | <Declaration> ; <Declaration List>
+     <Declaration> -> <Qualifier><IDs>
+     <Qualifier> -> integer | boolean
+**Token: Keyword         Lexeme: integer**
+     <IDs> -> <Identifier> | <Identifier>, <IDs>
+**Token: Identifier      Lexeme: i**
+**Token: Separator       Lexeme: ,**
+     <IDs> -> <Identifier> | <Identifier>, <IDs>
+**Token: Identifier      Lexeme: max**
+**Token: Separator       Lexeme: ,**
+     <IDs> -> <Identifier> | <Identifier>, <IDs>
+**Token: Identifier      Lexeme: sum**
+**Token: Separator       Lexeme: ;**
+**Token: Separator       Lexeme: $$**
+     <Statement List> -> <Statement> | <Statement> <Statement List>
+     <Statement> -> <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
+     <Assign> -> <Identifier> = <Expression> ;
+**Token: Identifier      Lexeme: sum**
+**Token: Operator        Lexeme: =**
+     <Expression> -> <Term> <Expression Prime>
+     <Term> -> <Factor><Term Prime>
+     <Factor> -> <Primary>
+     <Primary> -> <Identifier> <Primary Prime> | <Integer> | ( <Expression> ) | true | false
+**Token: Integer         Lexeme: 0**
+     <Term Prime> -> <Empty>
      <Empty> -> epsilon
+     <Expression Prime> -> <Empty>
+     <Empty> -> epsilon
+**Token: Separator       Lexeme: ;**
+     <Statement List> -> <Statement> | <Statement> <Statement List>
+     <Statement> -> <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
+     <Assign> -> <Identifier> = <Expression> ;
+**Token: Identifier      Lexeme: i**
+**Token: Operator        Lexeme: =**
+     <Expression> -> <Term> <Expression Prime>
+     <Term> -> <Factor><Term Prime>
+     <Factor> -> <Primary>
+     <Primary> -> <Identifier> <Primary Prime> | <Integer> | ( <Expression> ) | true | false
+**Token: Integer         Lexeme: 1**
+     <Term Prime> -> <Empty>
+     <Empty> -> epsilon
+     <Expression Prime> -> <Empty>
+     <Empty> -> epsilon
+**Token: Separator       Lexeme: ;**
+     <Statement List> -> <Statement> | <Statement> <Statement List>
+     <Statement> -> <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
+     <Scan> -> scan(<IDs>);
+**Token: Keyword         Lexeme: scan**
+**Token: Separator       Lexeme: (**
+     <IDs> -> <Identifier> | <Identifier>, <IDs>
+**Token: Identifier      Lexeme: max**
+**Token: Separator       Lexeme: )**
+**Token: Separator       Lexeme: ;**
+     <Statement List> -> <Statement> | <Statement> <Statement List>
+     <Statement> -> <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
+     <While> -> while ( <Condition> ) <Statement> endwhile
+**Token: Keyword         Lexeme: while**
+**Token: Separator       Lexeme: (**
+     <Condition> -> <Expression> <Relop> <Expression>
+     <Expression> -> <Term> <Expression Prime>
+     <Term> -> <Factor><Term Prime>
+     <Factor> -> <Primary>
+     <Primary> -> <Identifier> <Primary Prime> | <Integer> | ( <Expression> ) | true | false
+**Token: Identifier      Lexeme: i**
+     <Primary Prime> -> <Empty>
+     <Empty> -> epsilon
+     <Term Prime> -> <Empty>
+     <Empty> -> epsilon
+     <Expression Prime> -> <Empty>
+     <Empty> -> epsilon
+     <Relop> -> == | != | > | < | <= | =>
+**Token: Operator        Lexeme: <**
+     <Expression> -> <Term> <Expression Prime>
+     <Term> -> <Factor><Term Prime>
+     <Factor> -> <Primary>
+     <Primary> -> <Identifier> <Primary Prime> | <Integer> | ( <Expression> ) | true | false
+**Token: Identifier      Lexeme: max**
+     <Primary Prime> -> <Empty>
+     <Empty> -> epsilon
+     <Term Prime> -> <Empty>
+     <Empty> -> epsilon
+     <Expression Prime> -> <Empty>
+     <Empty> -> epsilon
+**Token: Separator       Lexeme: )**
+     <Statement> -> <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
+     <Compound> -> { <Statement List> }
+**Token: Separator       Lexeme: {**
+     <Statement List> -> <Statement> | <Statement> <Statement List>
+     <Statement> -> <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
+     <Assign> -> <Identifier> = <Expression> ;
+**Token: Identifier      Lexeme: sum**
+**Token: Operator        Lexeme: =**
+     <Expression> -> <Term> <Expression Prime>
+     <Term> -> <Factor><Term Prime>
+     <Factor> -> <Primary>
+     <Primary> -> <Identifier> <Primary Prime> | <Integer> | ( <Expression> ) | true | false
+**Token: Identifier      Lexeme: sum**
+     <Primary Prime> -> <Empty>
+     <Empty> -> epsilon
+     <Term Prime> -> <Empty>
+     <Empty> -> epsilon
+     <Expression Prime> -> +<Term><Expression Prime> | -<Term><Expression Prime>
+**Token: Operator        Lexeme: +**
+     <Term> -> <Factor><Term Prime>
+     <Factor> -> <Primary>
+     <Primary> -> <Identifier> <Primary Prime> | <Integer> | ( <Expression> ) | true | false
+**Token: Identifier      Lexeme: i**
+     <Primary Prime> -> <Empty>
+     <Empty> -> epsilon
+     <Term Prime> -> <Empty>
+     <Empty> -> epsilon
+     <Expression Prime> -> <Empty>
+     <Empty> -> epsilon
+**Token: Separator       Lexeme: ;**
+     <Statement List> -> <Statement> | <Statement> <Statement List>
+     <Statement> -> <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
+     <Assign> -> <Identifier> = <Expression> ;
+**Token: Identifier      Lexeme: i**
+**Token: Operator        Lexeme: =**
+     <Expression> -> <Term> <Expression Prime>
+     <Term> -> <Factor><Term Prime>
+     <Factor> -> <Primary>
+     <Primary> -> <Identifier> <Primary Prime> | <Integer> | ( <Expression> ) | true | false
+**Token: Identifier      Lexeme: i**
+     <Primary Prime> -> <Empty>
+     <Empty> -> epsilon
+     <Term Prime> -> <Empty>
+     <Empty> -> epsilon
+     <Expression Prime> -> +<Term><Expression Prime> | -<Term><Expression Prime>
+**Token: Operator        Lexeme: +**
+     <Term> -> <Factor><Term Prime>
+     <Factor> -> <Primary>
+     <Primary> -> <Identifier> <Primary Prime> | <Integer> | ( <Expression> ) | true | false
+**Token: Integer         Lexeme: 1**
+     <Term Prime> -> <Empty>
+     <Empty> -> epsilon
+     <Expression Prime> -> <Empty>
+     <Empty> -> epsilon
+**Token: Separator       Lexeme: ;**
+**Token: Separator       Lexeme: }**
+**Token: Keyword         Lexeme: endwhile**
+     <Statement List> -> <Statement> | <Statement> <Statement List>
+     <Statement> -> <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
+     <Print> -> print ( <Expression>) ;
+**Token: Keyword         Lexeme: print**
+**Token: Separator       Lexeme: (**
+     <Expression> -> <Term> <Expression Prime>
+     <Term> -> <Factor><Term Prime>
+     <Factor> -> <Primary>
+     <Primary> -> <Identifier> <Primary Prime> | <Integer> | ( <Expression> ) | true | false
+**Token: Identifier      Lexeme: sum**
+     <Primary Prime> -> <Empty>
+     <Empty> -> epsilon
+     <Term Prime> -> <Empty>
+     <Empty> -> epsilon
+     <Expression Prime> -> +<Term><Expression Prime> | -<Term><Expression Prime>
+**Token: Operator        Lexeme: +**
+     <Term> -> <Factor><Term Prime>
+     <Factor> -> <Primary>
+     <Primary> -> <Identifier> <Primary Prime> | <Integer> | ( <Expression> ) | true | false
+**Token: Identifier      Lexeme: max**
+     <Primary Prime> -> <Empty>
+     <Empty> -> epsilon
+     <Term Prime> -> <Empty>
+     <Empty> -> epsilon
+     <Expression Prime> -> <Empty>
+     <Empty> -> epsilon
+**Token: Separator       Lexeme: )**
+**Token: Separator       Lexeme: ;**
 **Token: Separator       Lexeme: $$**
 
- SYNTAX ERROR: 
-Unexpected keyword 'integer' in <Statement>
-
 ASSEMBLY INSTRUCTIONS USED
+1: PUSHI 0
+2: POPM 10002
+3: PUSHI 1
+4: POPM 10000
+5: PUSHM 10000
+6: PUSHM 10001
+7: PUSHM 10002
+8: PUSHM 10000
+9: A
+10: POPM 10002
+11: PUSHM 10000
+12: PUSHI 1
+13: A
+14: POPM 10000
+15: PUSHM 10002
+16: PUSHM 10001
+17: A
 
 
 Identifier  MemoryLocation  Type
+i           10000           Identifier
+max         10001           Identifier
+sum         10002           Identifier

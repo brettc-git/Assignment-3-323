@@ -104,6 +104,11 @@ class Syntax:
       self.syntax_error("Invalid qualifier. Expected 'integer' or 'boolean'")
 
   def optDeclarationList(self):
+    while self.current and not (self.current and self.current[0] == "Keyword" and self.current[1] in ["integer", "boolean"]):
+      if self.current[0] == "Keyword" and self.current[1] == "$$":
+        break
+      self.next()
+
     if self.current and self.current[0] == "Keyword" and self.current[1] in ["integer", "boolean"]:
       rule = "<Opt Declaration List> -> <Declaration List>"
       self.add_production(rule)
