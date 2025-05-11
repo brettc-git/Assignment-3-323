@@ -11,9 +11,9 @@ class Assembly:
     def print_instructions(self):
         output = "ASSEMBLY INSTRUCTIONS USED\n"
         for index, line in enumerate(self.instructions, start = 1):
-            output += f"{index}: {line}"
+            output += f"{index}: {line}\n"
         return output
-            
+
     def add_neq(self, operand1, operand2):
         self.add_instruction("NEQ", operand1, operand2)
 
@@ -56,7 +56,7 @@ class Assembly:
         elif command == "S":
             if len(self.stack) < 2:
                 print("Error: Not enough values on stack for S")
-                return 
+                return
             b = self.stack.pop()
             a = self.stack.pop()
             self.stack.append(a-b)
@@ -64,7 +64,7 @@ class Assembly:
         elif command == "M":
             if len(self.stack) < 2:
                 print("Error: Not enough values on stack for M")
-                return 
+                return
             b = self.stack.pop()
             a = self.stack.pop()
             self.stack.append(a*b)
@@ -72,7 +72,7 @@ class Assembly:
         elif command == "D":
             if len(self.stack) < 2:
                 print("Error: Not enough values on stack for D")
-                return 
+                return
             b = self.stack.pop()
             a = self.stack.pop()
             self.stack.append(a/b)

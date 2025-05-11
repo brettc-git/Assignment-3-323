@@ -1,5 +1,4 @@
-$$
-[* NO function definitions *]
+
 $$
 integer i, max, sum; [* declarations *]
 $$
