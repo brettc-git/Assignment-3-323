@@ -78,20 +78,37 @@ class Assembly:
             self.stack.append(a/b)
             self.instructions.append("D")
         elif command == "GRT": # Pop two items from stack and push 1 onto TOS if second item is greater, otherwise push 0
+            b = self.stack.pop()
+            a = self.stack.pop()
+            self.stack.append(1 if a>b else 0)
             self.instructions.append("GRT")
         elif command == "LES":
+            b = self.stack.pop()
+            a = self.stack.pop()
+            self.stack.append(1 if a<b else 0)
             self.instructions.append("LES")
         elif command == "EQU":
+            b = self.stack.pop()
+            a = self.stack.pop()
+            self.stack.append(1 if a==b else 0)
             self.instructions.append("EQU")
         elif command == "NEQ":
+            b = self.stack.pop()
+            a = self.stack.pop()
+            self.stack.append(1 if a!=b else 0)
             self.instructions.append("NEQ")
         elif command == "GEQ":
+            b = self.stack.pop()
+            a = self.stack.pop()
+            self.stack.append(1 if a>=b else 0)
             self.instructions.append("GEQ")
         elif command == "LEQ":
+            b = self.stack.pop()
+            a = self.stack.pop()
+            self.stack.append(1 if a<=b else 0)
             self.instructions.append("LEQ")
         elif command == "JMP0": # Pop stack and if value is 0 then jmp to Instruction Location (IL)
-            if value is None:
-                return
+            self.stack.pop()
             self.instructions.append(f"JMP0 {value}")
         elif command == "JMP": # Unconditionally jump to IL
             self.instructions.append(f"JMP {value}")
