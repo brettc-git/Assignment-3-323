@@ -315,7 +315,7 @@ class Syntax:
 
     endLoop = len(self.AC.instructions) + 1
 
-    self.AC.instructions[jumping] = f"JMP0 {endLoop}"
+    self.AC.instructions[jumping] = f"{"JMP0":<5} {endLoop}"
     self.match("Keyword", "endwhile")
 
   def condition(self):

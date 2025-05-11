@@ -1,19 +1,15 @@
 $$
 [* NO function definitions *]
 $$
-integer i, max, evenSum, oddSum;
+integer x, y, result;
+boolean flag;
 $$
-evenSum = 0;
-oddSum = 0;
-i = 1;
-scan (max);
-while (i <= max) {
-    if (i % 2 == 0) {
-        evenSum = evenSum + i;
-    } else {
-        oddSum = oddSum + i;
-    } endif
-    i = i + 1;
+x = 2;
+y = 5;
+result = x + y;
+flag = true;
+while (x < y) {
+    x = x + 1;
 } endwhile
-print (evenSum + oddSum);
+print(result + x);
 $$

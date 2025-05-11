@@ -1,17 +1,14 @@
 $$
 [* NO function definitions *]
 $$
-integer i, max, sum, product; [* declarations *]
+integer x, y, result;
 $$
-sum = 0;
-product = 1;
-i = 1;
-scan (max);
-while (i <= max) {
-    sum = sum + i;
-    product = product * i;
-    i = i + 1;
+x = 2;
+scan(y);
+result = 0;
+while (x < y) {
+    result = result + x;
+    x = x + 1;
 } endwhile
-print (sum);
-print (product);
+print(result + y);
 $$

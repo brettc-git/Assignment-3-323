@@ -11,7 +11,7 @@ class Assembly:
     def print_instructions(self):
         output = "ASSEMBLY INSTRUCTIONS USED\n"
         for index, line in enumerate(self.instructions, start = 1):
-            output += f"{index}: {line}\n"
+            output += f"{index:<4}{line}\n"
         return output
             
     def add_neq(self, operand1, operand2):
@@ -27,18 +27,18 @@ class Assembly:
     def execute_instruction(self, command, value = None):
         if command == "PUSHI": # Push integer value onto top of stack
             self.stack.append(value)
-            self.instructions.append(f"PUSHI {value}")
+            self.instructions.append(f"{"PUSHI":<5} {value}")
         elif command == "PUSHM": # Push value stored at memory location onto TOS
             loaded_val = self.memory_register.get(value, 0)
             self.stack.append(loaded_val)
-            self.instructions.append(f"PUSHM {value}")
+            self.instructions.append(f"{"PUSHM":<5} {value}")
         elif command == "POPM": # Pop value from TOS and store at ML
             if not self.stack:
                 print("Error: Stack empty on POPM")
                 return
             popped_val = self.stack.pop()
             self.memory_register[value] = popped_val
-            self.instructions.append(f"POPM {value}")
+            self.instructions.append(f"{"POPM":<5} {value}")
         elif command == "SOUT": # Pop vlaue from tOS and output to standard output
             value = self.stack.pop()
             print(f"Output: {value}")
@@ -109,9 +109,9 @@ class Assembly:
             self.instructions.append("LEQ")
         elif command == "JMP0": # Pop stack and if value is 0 then jmp to Instruction Location (IL)
             self.stack.pop()
-            self.instructions.append(f"JMP0 {value}")
+            self.instructions.append(f"{"JMP0":<5} {value}")
         elif command == "JMP": # Unconditionally jump to IL
-            self.instructions.append(f"JMP {value}")
+            self.instructions.append(f"{"JMP":<5} {value}")
         elif command == "LABEL":
             self.instructions.append("LABEL")
         else:

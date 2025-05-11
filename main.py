@@ -15,14 +15,15 @@ def done(input_text):
     AC.print_instructions()
 
 def main():
-    table = SymbolTable()
-    AC = Assembly() # For commands used
-    filenames = ["test1.txt"]
+    filenames = ["test1.txt", "test2.txt", "test3.txt"]
 
     for name in filenames:
         try:
             with open(name, "r") as file:
                 input_text = file.read()
+            
+            table = SymbolTable()
+            AC = Assembly() # For commands used
 
             parser = Syntax(input_text, table, AC)
             output_content = parser.parse()
