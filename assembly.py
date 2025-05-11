@@ -11,7 +11,7 @@ class Assembly:
     def print_instructions(self):
         output = "ASSEMBLY INSTRUCTIONS USED\n"
         for index, line in enumerate(self.instructions, start = 1):
-            output += f"{index}: {line}"
+            output += f"{index}: {line}\n"
         return output
             
     def add_neq(self, operand1, operand2):
