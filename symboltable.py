@@ -11,12 +11,12 @@ class SymbolTable:
 
 
     # Insert identifier into table
-    def insertAtTable(self, identifier):
+    def insertAtTable(self, identifier, token_type):
         if identifier in self.table:
             raise Exception("Identifier already exists in symbol table/Already declared.")
         self.table[identifier] = {
             "address": self.memory_address, # include also type of lexeme like integer
-            "type": type
+            "type": token_type
         }
 
         self.memory_address += 1 # i.e. if memory address is 10000, next one will be 10001

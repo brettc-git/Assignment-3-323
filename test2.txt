@@ -1,38 +1,17 @@
-[* Program performs math calculations *]
-
 $$
-function add(a integer, b integer)
-{
-    return a + b;
-}
-
-function subtract(a integer, b integer)
-{
-    return a - b;
-}
-
-function multiply(a integer, b integer)
-{
-    return a * b;
-}
-
-function divide(a integer, b integer)
-{
-    if (b == 0)
-        return 0;
-    else 
-        return a/b;
-    endif
-}
-
+[* NO function definitions *]
 $$
-    integer x, y;
-
+integer i, max, sum, product; [* declarations *]
 $$
-    scan(x, y);
-    print(add(x, y))
-    print(subtract(x, y))
-    print(multiply(x, y))
-    print(divide(x, y))
+sum = 0;
+product = 1;
+i = 1;
+scan (max);
+while (i <= max) {
+    sum = sum + i;
+    product = product * i;
+    i = i + 1;
+} endwhile
+print (sum);
+print (product);
 $$
-

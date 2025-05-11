@@ -1,22 +1,19 @@
-[* Program prints fibonacci sequence up to n  *]
-
 $$
-function fibonacci(n integer)
-{
-    if (n <= 1)
-        return n;
-    endif
-    return fibonacci(n - 1) + fibonacci(n - 2);
-}
+[* NO function definitions *]
 $$
-integer n, i;
-$$ 
-i=0
-
-while (i < n)
-{
-    print(fibonacci(i));
+integer i, max, evenSum, oddSum;
+$$
+evenSum = 0;
+oddSum = 0;
+i = 1;
+scan (max);
+while (i <= max) {
+    if (i % 2 == 0) {
+        evenSum = evenSum + i;
+    } else {
+        oddSum = oddSum + i;
+    } endif
     i = i + 1;
-}
-endwhile
-$$ 
+} endwhile
+print (evenSum + oddSum);
+$$

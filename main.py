@@ -10,14 +10,14 @@ def done(input_text):
     # Create lexer and get tokens from program
     parser = Syntax(input_text, table, AC)
     output_content = parser.parse()
-    
+
     table.printTable()
     AC.print_instructions()
 
 def main():
     table = SymbolTable()
     AC = Assembly() # For commands used
-    filenames = ["test1.txt"]
+    filenames = ["Assignment-3-323/test1.txt", "Assignment-3-323/test2.txt", "Assignment-3-323/test3.txt"]
 
     for name in filenames:
         try:
