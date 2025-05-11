@@ -11,6 +11,7 @@ class Syntax:
     self.lexer = Lexical(input)
     self.tokens = self.lexer.parse() # Parse all tokens from input
     self.current_index = 0
+    self.current_type = None
     self.current = self.tokens[0] if self.tokens else None # Takes the first token if one exists
     self.output_content = []  # To store output in the required format
     self.last_production_rules = []  # Store last rules before adding token
@@ -100,6 +101,7 @@ class Syntax:
     token_type, lexeme = self.current
     if token_type == "Keyword" and lexeme in ["integer", "boolean"]:
       self.match("Keyword", lexeme)
+      self.current_type = lexeme 
     else:
       self.syntax_error("Invalid qualifier. Expected 'integer' or 'boolean'")
 
@@ -139,7 +141,7 @@ class Syntax:
        self.add_production(rule)
 
        token_type, lexeme = self.match("Identifier")
-       self.table.insertAtTable(lexeme, token_type) # Insert variable into symbol table
+       self.table.insertAtTable(lexeme, self.current_type) # Insert variable into symbol table
 
        if self.current and self.current[1] == ",":
           self.match("Separator", ",")
@@ -266,6 +268,21 @@ class Syntax:
     self.expression()
     self.match("Separator", ")")
     self.match("Separator", ";")
+    self.AC.execute_instruction("SOUT")
+
+  def scan_ids(self):
+    rule = "<IDs> -> <Identifier> | <Identifier>, <IDs>"
+    self.add_production(rule)
+
+    token_type, lexeme = self.match("Identifier")
+    var_info = self.table.checkTable(lexeme)
+    dest_addr = var_info["address"]
+    self.AC.execute_instruction("SIN")
+    self.AC.execute_instruction("POPM", dest_addr)
+
+    if self.current and self.current[1] == ",":
+        self.match("Separator", ",")
+        self.scan_ids()
 
   def scan(self):
     rule = "<Scan> -> scan(<IDs>);"
@@ -273,7 +290,7 @@ class Syntax:
 
     self.match("Keyword", "scan")
     self.match("Separator", "(")
-    self.ids()
+    self.scan_ids()
     self.match("Separator", ")")
     self.match("Separator", ";")
 
@@ -283,9 +300,22 @@ class Syntax:
 
     self.match("Keyword", "while")
     self.match("Separator", "(")
+
+    startLoop = len(self.AC.instructions) + 1
+    self.AC.execute_instruction("LABEL")
+
     self.condition()
     self.match("Separator", ")")
+
+    jumping = len(self.AC.instructions)
+    self.AC.execute_instruction("JMP0", 0) #temp number until loop ends
+
     self.statement()
+    self.AC.execute_instruction("JMP", startLoop)
+
+    endLoop = len(self.AC.instructions) + 1
+
+    self.AC.instructions[jumping] = f"JMP0 {endLoop}"
     self.match("Keyword", "endwhile")
 
   def condition(self):
@@ -293,15 +323,20 @@ class Syntax:
     self.add_production(rule)
 
     self.expression()
-    self.relop()
+    result = self.relop()
     self.expression()
+    self.AC.execute_instruction(result)
+
 
   def relop(self):
-    rule = "<Relop> -> == | != | > | < | <= | =>"
+    rule = "<Relop> -> == | != | > | < | <= | >="
+    op_instruction = {">":"GRT", "<":"LES", "==":"EQU", "!=":"NEQ", ">=":"GEQ", "<=":"LEQ"}
     self.add_production(rule)
 
-    if self.current and self.current[0] == "Operator" and self.current[1] in ["==", "!=", ">", "<", "<=", "=>"]:
-      self.match("Operator", self.current[1])
+    if self.current and self.current[0] == "Operator" and self.current[1] in ["==", "!=", ">", "<", "<=", ">="]:
+      op = self.current[1]
+      self.match("Operator", op)
+      return op_instruction[op]
     else:
       self.syntax_error("Relational operator expected.")
 

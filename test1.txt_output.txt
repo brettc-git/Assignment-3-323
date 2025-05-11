@@ -74,7 +74,7 @@ Analysis for test1.txt
      <Empty> -> epsilon
      <Expression Prime> -> <Empty>
      <Empty> -> epsilon
-     <Relop> -> == | != | > | < | <= | =>
+     <Relop> -> == | != | > | < | <= | >=
 **Token: Operator        Lexeme: <**
      <Expression> -> <Term> <Expression Prime>
      <Term> -> <Factor><Term Prime>
@@ -180,22 +180,29 @@ ASSEMBLY INSTRUCTIONS USED
 2: POPM 10002
 3: PUSHI 1
 4: POPM 10000
-5: PUSHM 10000
-6: PUSHM 10001
-7: PUSHM 10002
+5: SIN
+6: POPM 10001
+7: LABEL
 8: PUSHM 10000
-9: A
-10: POPM 10002
-11: PUSHM 10000
-12: PUSHI 1
-13: A
-14: POPM 10000
-15: PUSHM 10002
-16: PUSHM 10001
-17: A
+9: PUSHM 10001
+10: LES
+11: JMP0 21
+12: PUSHM 10002
+13: PUSHM 10000
+14: A
+15: POPM 10002
+16: PUSHM 10000
+17: PUSHI 1
+18: A
+19: POPM 10000
+20: JMP 7
+21: PUSHM 10002
+22: PUSHM 10001
+23: A
+24: SOUT
 
 
 Identifier  MemoryLocation  Type
-i           10000           Identifier
-max         10001           Identifier
-sum         10002           Identifier
+i           10000           integer
+max         10001           integer
+sum         10002           integer

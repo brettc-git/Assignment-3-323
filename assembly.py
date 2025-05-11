@@ -44,7 +44,7 @@ class Assembly:
             print(f"Output: {value}")
             self.instructions.append("SOUT")
         elif command == "SIN":
-            self.stack.append(value)
+            self.stack.append(1)
             self.instructions.append("SIN")
         elif command == "A":
             if len(self.stack) < 2:
